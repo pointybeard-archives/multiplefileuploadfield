@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension id="multiplefileuploadfield" status="released" xmlns="http://symphony-cms.com/schemas/extension/1.0">
+	<name>Multiple File Upload</name>
+	<description>Select and upload multiple files at once</description>
+	<repo type="github">https://github.com/pointybeard/multiplefileuploadfield</repo>
+	<url type="discuss">http://symphony-cms.com/discuss/thread/XXX/</url>
+	<types>
+		<type>Field Types</type>
+	</types>
+	<authors>
+		<author>
+			<name github="pointybeard" symphony="pointybeard">Alistair Kearney</name>
+			<website>http://www.alistairkearney.com</website>
+		</author>
+	</authors>
+	<releases>
+		<release version="1.0" date="2013-05-17" min="2.3">
+			<![CDATA[- Initial Release]]>
+		</release>
+	</releases>
+</extension>

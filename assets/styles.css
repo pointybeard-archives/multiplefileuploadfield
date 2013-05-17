@@ -1,0 +1,16 @@
+/*.output {
+    width: 80%;
+    margin: 0 auto;
+    padding: 1em;
+}
+
+.output > li {
+    width: 100%;
+    list-style-type: disc;
+    line-height: 2em;
+    border-bottom: 1px solid #ccc;
+}
+
+.output > li span {
+    float: right;
+}*/
