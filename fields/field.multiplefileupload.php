@@ -365,10 +365,46 @@
 		}
 
 		public function appendFormattedElement(&$wrapper, $data){
-			parent::appendFormattedElement($wrapper, $data);
-			$field = $wrapper->getChildrenByName($this->get('element_name'));
-			if(!empty($field))
-				end($field)->appendChild(new XMLElement('clean-filename', General::sanitize(self::getCleanFilename(basename($data['file'])))));
+
+			// It is possible an array of NULL data will be passed in. Check for this.
+			if(!is_array($data) || !isset($data['file']) || !is_array($data['file']) || count($data['file']) == 0){
+				return;
+			}
+			
+			$items = new XMLElement($this->get('element_name'), NULL, array('count' => count($data['file'])));
+			
+			for($ii = 0; $ii < count($data['file']); $ii++){
+				$item = new XMLElement('file');
+				$file = WORKSPACE . $data['file'][$ii];
+				$item->setAttributeArray(array(
+					'size' =>	(
+									file_exists($file)
+									&& is_readable($file)
+										? General::formatFilesize(filesize($file))
+										: 'unknown'
+								),
+				 	'path' =>	General::sanitize(
+				 			 		str_replace(WORKSPACE, NULL, dirname(WORKSPACE . $data['file'][$ii]))
+				 				),
+					'type' =>	$data['mimetype'][$ii]
+				));
+				$item->appendChild(new XMLElement('filename', General::sanitize(basename($data['file'][$ii]))));
+				$item->appendChild(new XMLElement('clean-filename', General::sanitize(self::getCleanFilename(basename($data['file'][$ii])))));
+				
+				$m = unserialize($data['meta'][$ii]);
+
+				if(is_array($m) && !empty($m)){
+					$meta = new XMLElement('meta', NULL, $m);
+					if(isset($m['creation'])){
+						$meta->appendChild(General::createXMLDateObject($m['creation']));
+					}
+					$item->appendChild($meta);
+				}
+				
+				$items->appendChild($item);
+			}
+			
+			$wrapper->appendChild($items);
 		}
 
 		private static function getUniqueFilename($filename) {
